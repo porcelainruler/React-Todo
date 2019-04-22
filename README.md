@@ -25,7 +25,7 @@ A React Todo App with Server Side Session Authentication
 5. To run the web-app go to main folder and type one of follwing command.  
         `cd ../`  
         `yarn start`  
-        **or**  
+           **or**  
         `npm run start`  
 
 
