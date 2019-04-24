@@ -1,7 +1,8 @@
 var express = require('express');
 var router = express.Router();
 const Todo = require('../models/todo');
-// 获取全部
+const Auth = require('../middleware/Auth');
+
 router.get('/getAllItems', (req, res, next) => {
    Todo.find({}).sort({'date': -1}).exec((err, todoList) => {
       if (err) {
@@ -11,8 +12,8 @@ router.get('/getAllItems', (req, res, next) => {
       }
    })
 });
-// 添加
-router.post('/addItem', (req, res, next) => {
+
+router.post('/addItem', Auth ,(req, res, next) => {
    console.log(req.body);
    let newItem = req.body;
    Todo.create(newItem, (err) => {
@@ -31,8 +32,7 @@ router.post('/addItem', (req, res, next) => {
    })
 })
 
-// 删除
-router.post('/deleteItem', (req, res, next) => {
+router.post('/deleteItem', Auth ,(req, res, next) => {
    console.log(req.body);
    let delete_date = req.body.date
    Todo.remove({date: delete_date}, (err, result) => {

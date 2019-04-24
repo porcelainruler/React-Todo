@@ -12,12 +12,16 @@ button {
 	cursor: pointer;
 }
 
-.container {
+.inbut {
+	display: inline-block;
+}
+
+.container1 {
 	position: absolute;
 	top: 15%;
 	right: 15%;
 	left: 50%;
-	width: 400px;
+	width: 420px;
 	height: 475px;
 	margin-left: -200px;
 	overflow-x: hidden;

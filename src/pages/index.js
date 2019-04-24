@@ -1,6 +1,14 @@
 import React from 'react'
 import $ from 'jquery'
 import TodoList from './comps/todo-list'
+import Header from './comps/Header'
+import { Navbar, NavbarBrand, Nav, NavbarToggler, Collapse, NavItem, Jumbotron,
+    Button, Modal, ModalHeader, ModalBody,
+    Form, FormGroup, Input, Label } from 'reactstrap';
+import { NavLink } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+
 
 class Todo extends React.Component {
 
@@ -8,16 +16,54 @@ class Todo extends React.Component {
       super(props);
       this.state = {
          todoList: [],
-         showTooltip: false  // 控制 tooltip 的显示隐藏
+         showTooltip: false,
+         isNavOpen: false,
+         isModalLOpen: false,
+         isModalROpen: false  
       }
+
+    this.toggleNav = this.toggleNav.bind(this) /*binding toggleNav to this*/
+    this.toggleLModal = this.toggleLModal.bind(this) /*binding toggle Login Modal to this*/
+    this.handleLogin = this.handleLogin.bind(this) /*binding handleLogin to this*/
+    this.toggleRModal = this.toggleRModal.bind(this) /*binding toggle Register Modal to this*/
+    this.handleRegister = this.handleRegister.bind(this) /*binding handleRegister to this*/
+
    }
 
-   componentDidMount () { //组件渲染完成 已经出现在dom文档里 render 方法之后
-      // 获取所有的 todolist
+   toggleNav() {
+    this.setState({
+        isNavOpen: !this.state.isNavOpen
+    });
+}
+
+    toggleLModal() {
+        this.setState({
+            isModalLOpen: !this.state.isModalLOpen
+        });
+    }
+
+    toggleRModal() {
+        this.setState({
+            isModalROpen: !this.state.isModalROpen
+        });
+    }
+
+    handleRegister(event) {
+        this.toggleRModal();
+        alert("Username: " + this.username.value + " Password: " + this.password.value + " Remember Me: " + this.remember.checked);
+        event.preventDefault();
+    }
+
+    handleLogin(event) {
+        this.toggleLModal();
+        alert("Username: " + this.username.value + " Password: " + this.password.value + " Remember Me: " + this.remember.checked);
+        event.preventDefault();
+    }
+
+   componentDidMount () { 
       this._getTodoList();
    }
 
-   // 获取
    _getTodoList () {
       const that = this;
       $.ajax({
@@ -37,7 +83,6 @@ class Todo extends React.Component {
       });
    }
 
-   // 添加
    _onNewItem (newItem) {
       const that = this;
       $.ajax({
@@ -59,7 +104,6 @@ class Todo extends React.Component {
    }
 
 
-   // 删除
    _onDeleteItem (date) {
       // const that = this;
       const postData = {
@@ -80,17 +124,14 @@ class Todo extends React.Component {
       })
    }
 
-   // 对 todolist 进行逆向排序（使新录入的项目显示在列表上面）
    todoSort (todoList) {
       todoList.reverse();
       return todoList;
    }
 
-   // 提交表单操作
    handleSubmit(event){
 
       event.preventDefault();
-      // 表单输入为空验证
       if(this.refs.content.value === "") {
          this.refs.content.focus();
          this.setState({
@@ -109,18 +150,14 @@ class Todo extends React.Component {
       if (minutes < 10) { minutes += '0'; }
       if (seconds < 10) { seconds += '0'; }
 
-      // 生成参数
       const newItem={
          content: this.refs.content.value,
          date: month + "/" + date + " " + hours + ":" + minutes + ":" + seconds
       };
 
       console.log(newItem);
-      // 添加 todo
       this._onNewItem(newItem)
-      // 重置表单
       this.refs.todoForm.reset();
-      // 隐藏提示信息
       this.setState({
          showTooltip: false,
       });
@@ -128,8 +165,73 @@ class Todo extends React.Component {
 
    render() {
       return (
-          <div className="container">
-             <h2 className="header">Todo List</h2>
+          <div className="container1">
+             <div className="row">
+                <div className="col-6">   
+                    <h2 className="header">Todo List</h2>
+                </div>
+
+                <div className="col-6"> 
+                <Nav className="ml-auto" navbar style={{display: 'inline'}}>  
+                <NavItem style={{display: 'inline'}}>
+                    <Button className="inbut" outline onClick={this.toggleLModal}>
+                        <span className="fa fa-sign-in fa-lg"></span> Login
+                    </Button>
+                </NavItem>
+                <NavItem style={{display: 'inline'}} className="ml-4">
+                    <Button className="inbut" outline onClick={this.toggleRModal}>
+                        <span className="fa fa-sign-in fa-lg"></span> Register
+                    </Button>
+                </NavItem>
+                </Nav>
+
+                <Modal isOpen={this.state.isModalLOpen} toggle={this.toggleLModal}>
+                    <ModalHeader toggle={this.toggleLModal}>Login</ModalHeader>
+                    <ModalBody>
+                        <Form onSubmit={this.handleLogin}>
+                            <FormGroup>
+                                <Label htmlFor="username">Username</Label>
+                                <Input type="text" id="username" name="username" 
+                                    innerRef={ (input) => this.username=input } />
+                            </FormGroup>
+                            <FormGroup>
+                                <Label htmlFor="password">Password</Label>
+                                <Input type="password" id="password" name="password"
+                                    innerRef={ (input) => this.password=input } />
+                            </FormGroup>
+                            <FormGroup check>
+                                <Label check>
+                                    <Input type="checkbox" name="remember"
+                                        innerRef={ (input) => this.remember=input } />
+                                    Remember me
+                                </Label>
+                            </FormGroup>
+                            <Button type="submit" value="submit" color="primary">Login</Button>
+                        </Form>
+                    </ModalBody>
+                </Modal>
+                <Modal isOpen={this.state.isModalROpen} toggle={this.toggleRModal}>
+                    <ModalHeader toggle={this.toggleRModal}>Register</ModalHeader>
+                    <ModalBody>
+                        <Form onSubmit={this.handleRegister}>
+                            <FormGroup>
+                                <Label htmlFor="username">Username</Label>
+                                <Input type="text" id="username" name="username" 
+                                    innerRef={ (input) => this.username=input } />
+                            </FormGroup>
+                            <FormGroup>
+                                <Label htmlFor="password">Password</Label>
+                                <Input type="password" id="password" name="password"
+                                    innerRef={ (input) => this.password=input } />
+                            </FormGroup>
+            
+                            <Button type="submit" value="submit" color="primary">Register</Button>
+                        </Form>
+                    </ModalBody>
+                </Modal>
+                </div>
+                                        
+             </div>
              <form className="todoForm" ref="todoForm" onSubmit={ this.handleSubmit.bind(this) }>
                 <input ref="content" type="text" placeholder="Type content here..." className="todoContent" />
                 { this.state.showTooltip &&
