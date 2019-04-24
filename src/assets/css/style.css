@@ -21,7 +21,7 @@ button {
 	top: 15%;
 	right: 15%;
 	left: 50%;
-	width: 420px;
+	width: 480px;
 	height: 475px;
 	margin-left: -200px;
 	overflow-x: hidden;
@@ -47,7 +47,7 @@ button {
 
 .todoContent {
 	display: block;
-	width: 380px;
+	width: 440px;
 	padding: 10px;
 	margin-bottom: 20px;
 	border: none;

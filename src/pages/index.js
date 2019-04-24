@@ -1,7 +1,6 @@
 import React from 'react'
 import $ from 'jquery'
 import TodoList from './comps/todo-list'
-import Header from './comps/Header'
 import { Navbar, NavbarBrand, Nav, NavbarToggler, Collapse, NavItem, Jumbotron,
     Button, Modal, ModalHeader, ModalBody,
     Form, FormGroup, Input, Label } from 'reactstrap';
@@ -17,6 +16,7 @@ class Todo extends React.Component {
       this.state = {
          username: "",
          password: "",
+         isLogged: false,
          todoList: [],
          showTooltip: false,
          isNavOpen: false,
@@ -29,7 +29,8 @@ class Todo extends React.Component {
     this.handleLogin = this.handleLogin.bind(this) /*binding handleLogin to this*/
     this.toggleRModal = this.toggleRModal.bind(this) /*binding toggle Register Modal to this*/
     this.handleRegister = this.handleRegister.bind(this) /*binding handleRegister to this*/
-
+    this.toggleLogin = this.toggleLogin.bind(this)
+    this.toggleRegister = this.toggleRegister.bind(this)
    }
 
    toggleNav() {
@@ -51,47 +52,53 @@ class Todo extends React.Component {
     }
 
     handleRegister(event) {
-        this.toggleRModal();
-        this.setState({
-            username : this.username.value,
-            password : this.password.value
-        })
-        $.ajax({
-            url: '/api/register',
-            type: 'post',
-            dataType: 'json',
-            data: {username: this.username.value, password: this.password.value},
-            success: data => {
-               console.log(data);
-            },
-            error: err => {
-               console.log(err);
-            }
-         })
-        alert("Username: " + this.username.value + " Password: " + this.password.value + " Remember Me: " + this.remember.checked);
-        event.preventDefault();
+        if(!this.state.isLogged){
+            this.toggleRModal();
+            this.setState({
+                username : this.username.value,
+                password : this.password.value,
+                isLogged : true
+            })
+            $.ajax({
+                url: '/api/register',
+                type: 'post',
+                dataType: 'json',
+                data: {username: this.username.value, password: this.password.value},
+                success: data => {
+                    console.log(data);
+                },
+                error: err => {
+                    console.log(err);
+                }
+            })
+            alert("Username: " + this.username.value + " Password: " + this.password.value + " Remember Me: " + this.remember.checked);
+            event.preventDefault();
+        }
     }
 
     handleLogin(event) {
-        this.toggleLModal();
-        this.setState({
-            username : this.username.value,
-            password : this.password.value
-        })
-        $.ajax({
-            url: '/api/authenticate',
-            type: 'post',
-            dataType: 'json',
-            data: {username: this.username.value, password: this.password.value},
-            success: data => {
-               console.log(data);
-            },
-            error: err => {
-               console.log(err);
-            }
-         })
-        alert("Username: " + this.username.value + " Password: " + this.password.value + " Remember Me: " + this.remember.checked);
-        event.preventDefault();
+        if(!this.state.isLogged){
+            this.toggleLModal();
+            this.setState({
+                username : this.username.value,
+                password : this.password.value,
+                isLogged : true
+            })
+            $.ajax({
+                url: '/api/authenticate',
+                type: 'post',
+                dataType: 'json',
+                data: {username: this.username.value, password: this.password.value},
+                success: data => {
+                console.log(data);
+                },
+                error: err => {
+                console.log(err);
+                }
+            })
+            alert("Username: " + this.username.value + " Password: " + this.password.value + " Remember Me: " + this.remember.checked);
+            event.preventDefault();
+        }
     }
 
    componentDidMount () { 
@@ -197,26 +204,42 @@ class Todo extends React.Component {
       });
    }
 
+   toggleLogin(event) {
+       if(!this.state.isLogged){
+        this.setState({
+            isModalLOpen: !this.state.isModalLOpen
+        });
+       }
+   }
+
+   toggleRegister() {
+        if(!this.state.isLogged){
+            this.setState({
+                isModalROpen: !this.state.isModalROpen
+            });
+        }
+    }
+
    render() {
       return (
           <div className="container1">
              <div className="row">
-                <div className="col-6">   
+                <div className="col-5">   
                     <h2 className="header">Todo List</h2>
                 </div>
 
-                <div className="col-6"> 
+                <div className="col-7"> 
                 <Nav className="ml-auto" navbar style={{display: 'inline'}}>  
-                <NavItem style={{display: 'inline'}}>
-                    <Button className="inbut" outline onClick={this.toggleLModal}>
-                        <span className="fa fa-sign-in fa-lg"></span> Login
-                    </Button>
-                </NavItem>
-                <NavItem style={{display: 'inline'}} className="ml-4">
-                    <Button className="inbut" outline onClick={this.toggleRModal}>
-                        <span className="fa fa-sign-in fa-lg"></span> Register
-                    </Button>
-                </NavItem>
+                    <NavItem style={{display: 'inline'}}>
+                        <Button className="inbut" outline onClick={this.toggleLogin}>
+                            <span className="fa fa-sign-in fa-lg"></span> {this.state.isLogged? 'Logged In' : 'Login'}
+                        </Button>
+                    </NavItem>
+                    <NavItem style={{display: 'inline'}} className="ml-4">
+                        <Button className="inbut" outline onClick={this.toggleRegister}>
+                            <span className="fa fa-sign-in fa-lg"></span> {this.state.isLogged? `${this.state.username}` : 'Register'}
+                        </Button>
+                    </NavItem>
                 </Nav>
 
                 <Modal isOpen={this.state.isModalLOpen} toggle={this.toggleLModal}>
@@ -276,6 +299,9 @@ class Todo extends React.Component {
           </div>
       )
    }
+
 }
+
+
 
 export default Todo;

@@ -1,5 +1,5 @@
 # React-Todo  
-A React Todo App with Server Side Session Authentication    
+A React Todo App with Server Side JWT based Authentication    
   
 # Technology Stack  
 1. React
@@ -27,6 +27,10 @@ A React Todo App with Server Side Session Authentication
         `yarn start`  
            **or**  
         `npm run start`  
+
+# Application Working Photos :
+![My image](porcelainruler.github.com/React-Todo/photos/1.jpeg)
+
 
 
 
