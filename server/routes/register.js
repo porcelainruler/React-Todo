@@ -7,7 +7,8 @@ const config = require('../config');
 
 
 Register_router.post('/api/register', function(req, res) {
-    const { email, password } = req.body;
+    const email = req.body.username;
+    const password  = req.body.password;
     const user = new User({ email, password });
     user.save(function(err) {
       if (err) {
@@ -20,7 +21,8 @@ Register_router.post('/api/register', function(req, res) {
   });
 
 Register_router.post('/api/authenticate', function(req, res) {
-    const { email, password } = req.body;
+   const email = req.body.username;
+   const password  = req.body.password;
     User.findOne({ email }, function(err, user) {
       if (err) {
         console.error(err);

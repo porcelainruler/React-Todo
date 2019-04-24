@@ -15,6 +15,8 @@ class Todo extends React.Component {
    constructor(props) {
       super(props);
       this.state = {
+         username: "",
+         password: "",
          todoList: [],
          showTooltip: false,
          isNavOpen: false,
@@ -50,12 +52,44 @@ class Todo extends React.Component {
 
     handleRegister(event) {
         this.toggleRModal();
+        this.setState({
+            username : this.username.value,
+            password : this.password.value
+        })
+        $.ajax({
+            url: '/api/register',
+            type: 'post',
+            dataType: 'json',
+            data: {username: this.username.value, password: this.password.value},
+            success: data => {
+               console.log(data);
+            },
+            error: err => {
+               console.log(err);
+            }
+         })
         alert("Username: " + this.username.value + " Password: " + this.password.value + " Remember Me: " + this.remember.checked);
         event.preventDefault();
     }
 
     handleLogin(event) {
         this.toggleLModal();
+        this.setState({
+            username : this.username.value,
+            password : this.password.value
+        })
+        $.ajax({
+            url: '/api/authenticate',
+            type: 'post',
+            dataType: 'json',
+            data: {username: this.username.value, password: this.password.value},
+            success: data => {
+               console.log(data);
+            },
+            error: err => {
+               console.log(err);
+            }
+         })
         alert("Username: " + this.username.value + " Password: " + this.password.value + " Remember Me: " + this.remember.checked);
         event.preventDefault();
     }
