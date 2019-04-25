@@ -1,5 +1,5 @@
 # React-Todo  
-A React Todo App with Server Side JWT based Authentication    
+A React Todo App with Server Side JWT based Authentication. I have used Modal for Registration and Login.    
   
 # Technology Stack  
 1. React
