@@ -17,7 +17,7 @@ router.post('/api/register', function(req, res) {
         res.status(500)
           .send("Error registering new user please try again.");
       } else {
-        res.status(200).send("Welcome to the club!");
+        res.status(200).json({registered : 'Welcome to the club!'});
       }
     });
   });
@@ -55,8 +55,10 @@ router.post('/api/authenticate', function(req, res) {
             const token = jwt.sign(payload, secret, {
               expiresIn: '1h'
             });
+            console.log({isLogged: true})
             res.cookie('token', token, { httpOnly: true })
-              .sendStatus(200);
+              .status(200)
+              .json({isLogged : 'true'});
           }
         });
       }

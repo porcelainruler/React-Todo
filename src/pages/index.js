@@ -57,8 +57,8 @@ class Todo extends React.Component {
             this.setState({
                 username : this.username.value,
                 password : this.password.value,
-                isLogged : true
             })
+            const that = this;
             $.ajax({
                 url: '/api/register',
                 type: 'post',
@@ -66,12 +66,15 @@ class Todo extends React.Component {
                 data: {username: this.username.value, password: this.password.value},
                 success: data => {
                     console.log(data);
+                    that.setState({
+                        isLogged : true
+                     });
+                     alert("Successfullt Registered")
                 },
                 error: err => {
                     console.log(err);
                 }
             })
-            alert("Username: " + this.username.value + " Password: " + this.password.value + " Remember Me: " + this.remember.checked);
             event.preventDefault();
         }
     }
@@ -81,22 +84,27 @@ class Todo extends React.Component {
             this.toggleLModal();
             this.setState({
                 username : this.username.value,
-                password : this.password.value,
-                isLogged : true
+                password : this.password.value
             })
+            let flag = false;
             $.ajax({
                 url: '/api/authenticate',
                 type: 'post',
-                dataType: 'json',
                 data: {username: this.username.value, password: this.password.value},
                 success: data => {
                 console.log(data);
+                flag = true
+                this.setState({
+                    isLogged : true
+                 });
+                 alert("Successfully Logged In")
                 },
                 error: err => {
+                    alert("Wrong Username or Password")
                 console.log(err);
                 }
             })
-            alert("Username: " + this.username.value + " Password: " + this.password.value + " Remember Me: " + this.remember.checked);
+            
             event.preventDefault();
         }
     }
