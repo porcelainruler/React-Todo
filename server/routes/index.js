@@ -9,9 +9,9 @@ const secret = /*require('../config')*/"supersecret";
 
 
 router.post('/api/register', function(req, res) {
-    const email = req.body.username;
+    const username = req.body.username;
     const password  = req.body.password;
-    const user = new User({ email, password });
+    const user = new User({ username, password });
     user.save(function(err) {
       if (err) {
         res.status(500)
@@ -23,9 +23,9 @@ router.post('/api/register', function(req, res) {
   });
 
 router.post('/api/authenticate', function(req, res) {
-   const email = req.body.username;
+   const username = req.body.username;
    const password  = req.body.password;
-    User.findOne({ email }, function(err, user) {
+    User.findOne({ username }, function(err, user) {
       if (err) {
         console.error(err);
         res.status(500)
@@ -51,7 +51,7 @@ router.post('/api/authenticate', function(req, res) {
             });
           } else {
             // Issue token
-            const payload = { email };
+            const payload = { username };
             const token = jwt.sign(payload, secret, {
               expiresIn: '1h'
             });
