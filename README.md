@@ -5,8 +5,9 @@ A React Todo App with Server Side JWT based Authentication. I have used Modal fo
 1. React
 2. Nodejs
 3. Express
-4. Express-Session
-5. Bootstrap  
+4. Cookie Parser
+5. JWT
+6. Bootstrap  
 
 # Instruction For Deployment  
 1. Go to your cloning destination where you want to clone the application and Git clone the repository from github.  
