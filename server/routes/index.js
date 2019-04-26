@@ -35,7 +35,7 @@ router.post('/api/authenticate', function(req, res) {
       } else if (!user) {
         res.status(401)
           .json({
-            error: 'Incorrect email or password'
+            error: 'Incorrect username or password'
           });
       } else {
         user.isCorrectPassword(password, function(err, same) {
@@ -47,7 +47,7 @@ router.post('/api/authenticate', function(req, res) {
           } else if (!same) {
             res.status(401)
               .json({
-                error: 'Incorrect email or password'
+                error: 'Incorrect username or password'
             });
           } else {
             // Issue token
