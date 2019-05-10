@@ -66,10 +66,7 @@ class Todo extends React.Component {
                 data: {username: this.username.value, password: this.password.value},
                 success: data => {
                     console.log(data);
-                    that.setState({
-                        isLogged : true
-                     });
-                     alert("Successfullt Registered")
+                     alert("Successfullt Registered!!! Please Login to continue")
                 },
                 error: err => {
                     console.log(err);
